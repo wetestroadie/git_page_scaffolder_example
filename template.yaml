@@ -1,1 +1,43 @@
+apiVersion: scaffolder.backstage.io/v1beta3?
+kind: Template
+metadata:
+  name: github-pages-website
+  title: GitHub Pages Website
+  description: Create a static HTML website and publish it via GitHub pages.
 
+spec:
+  owner: my-group-name
+  type: website
+  parameters:
+    - title: Choose a Source Control Management tool to store your new website in.
+      required:
+        - repoUrl
+      properties: 
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+
+    - id: publishToGitHub
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        # This will be used as the repo description on GitHub.
+        description: 'A static HTML website. Just like the good old days.'
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        repoVisibility: public
+
+  output:
+    remoteUrl: '{{ steps.publishToGitHub.output.remoteUrl }}'
