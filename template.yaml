@@ -38,6 +38,19 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
         repoVisibility: public
+    
+    - id: publishToWeb
+      name: Publish to web with GitHub Pages
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: /api/proxy/github/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        headers:
+          content-type: 'application/json'
+        body:
+          source:
+            branch: main
+            path: '/'
 
   output:
     remoteUrl: '{{ steps.publishToGitHub.output.remoteUrl }}'
