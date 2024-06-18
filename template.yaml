@@ -6,7 +6,7 @@ metadata:
   description: Create a static HTML website and publish it via GitHub pages.
 
 spec:
-  owner: my-group-name
+  owner: wetestroadie
   type: website
   parameters:
     - title: Choose a Source Control Management tool to store your new website in.
