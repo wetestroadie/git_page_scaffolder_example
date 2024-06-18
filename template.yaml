@@ -6,7 +6,7 @@ metadata:
   description: Create a static HTML website and publish it via GitHub pages.
 
 spec:
-  owner: user:testroadie
+  owner: wetestroadie
   type: website
   parameters:
     - title: Choose a Source Control Management tool to store your new website in.
@@ -44,7 +44,7 @@ spec:
       action: http:backstage:request
       input:
         method: 'POST'
-        path: /api/proxy/github-api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        path: /api/proxy/github/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
         headers:
           content-type: 'application/json'
         body:
