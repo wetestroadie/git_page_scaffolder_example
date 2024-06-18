@@ -6,7 +6,7 @@ metadata:
   description: Create a static HTML website and publish it via GitHub pages.
 
 spec:
-  owner: wetestroadie
+  owner: user:testroadie
   type: website
   parameters:
     - title: Choose a Source Control Management tool to store your new website in.
@@ -39,25 +39,12 @@ spec:
         defaultBranch: main
         repoVisibility: public
     
-    # - id: publishToWeb
-    #   name: Publish to web with GitHub Pages
-    #   action: http:backstage:request
-    #   input:
-    #     method: 'POST'
-    #     path: /api/proxy/github/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
-    #     headers:
-    #       content-type: 'application/json'
-    #     body:
-    #       source:
-    #         branch: main
-    #         path: '/'
-    
     - id: publishToWeb
-      name: Publish to web with GitHub Pages
+      name: Publish to web
       action: http:backstage:request
       input:
         method: 'POST'
-        path: /proxy/mygithub/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        path: /api/proxy/github-api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
         headers:
           content-type: 'application/json'
         body:
@@ -66,4 +53,7 @@ spec:
             path: '/'
 
   output:
-    remoteUrl: '{{ steps.publishToGitHub.output.remoteUrl }}'
+    remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
+    getResponse: ${{ steps.publishtToWeb.output.body }}
+    getCode: ${{ steps.publishtToWeb.output.code }}
+    getHeaders: ${{ steps.publishtToWeb.output.headers }}
